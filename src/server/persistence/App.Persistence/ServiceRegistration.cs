@@ -1,5 +1,7 @@
 ﻿using App.Application.Authentication;
+using App.Application.Repositories.Tickets;
 using App.Persistence.Authentication;
+using App.Persistence.Repositories.Tickets;
 using Microsoft.Extensions.Configuration;
 
 namespace App.Persistence;
@@ -41,6 +43,8 @@ public static class ServiceRegistration
             };
         });
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IReadTicketRepository, ReadTicketRepository>();
+        services.AddScoped<IWriteTicketRepository, WriteTicketRepository>();
         services.AddScoped<IReadUserRepository, ReadUserRepository>();
         services.AddScoped<IWriteUserRepository, WriteUserRepository>();
         services.AddScoped<IWriteRoleRepository, WriteRoleRepository>();

@@ -28,12 +28,34 @@ namespace App.API.Controllers
         [HttpGet]
         public List<GetUserViewModel> Get()
         {
-            return _readUserRepository.GetAll().Select(x=> new GetUserViewModel{
+            var result = _readUserRepository.GetAll().Select(x => new GetUserViewModel
+            {
                 Email = x.Email,
                 Id = x.Id,
                 Name = x.Name,
                 Surname = x.Surname
             }).ToList();
+            return result;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByEmail(int id)
+        {
+            var user = await _readUserRepository.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var response = new GetUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name,
+                Surname = user.Surname
+            };
+
+            return Ok(response);
         }
 
         // POST api/<UserController>
@@ -65,7 +87,7 @@ namespace App.API.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UpdateUserViewModel model)
+        public async Task<IActionResult> Put(UpdateUserViewModel model)
         {
             var responseViewModel = new ServiceResponse();
 
