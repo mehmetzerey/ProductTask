@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/_Layout.cshtml";
 }
@@ -9,7 +8,6 @@
         <div class="row justify-content-center mt-4">
             <div class="col-sm-6">
                 <table id="adminList" class="table table-striped projects">
-
                 </table>
             </div>
         </div>
@@ -58,55 +56,55 @@
 @section Scripts{
     <script type="text/javascript">
         const token = localStorage.getItem('token');
-        fetch('http://localhost:5001/api/User/GetAll?role=1', {
+        fetch('http://localhost:5001/api/User/GetAll?role=2', {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
-        .then(response => {
+            .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-        .then(admins => {
-            let adminTable = document.getElementById('adminList');
-            adminTable.innerHTML = '';
-            let header = adminTable.createTHead();
-            let row = header.insertRow(0);
-            let th = document.createElement('th');
-            th.innerHTML = 'ID';
-            row.appendChild(th);
+            .then(admins => {
+                let adminTable = document.getElementById('adminList');
+                adminTable.innerHTML = '';
+                let header = adminTable.createTHead();
+                let row = header.insertRow(0);
+                let th = document.createElement('th');
+                th.innerHTML = 'ID';
+                row.appendChild(th);
 
-            th = document.createElement('th');
-            th.innerHTML = 'Name';
-            row.appendChild(th);
+                th = document.createElement('th');
+                th.innerHTML = 'Name';
+                row.appendChild(th);
 
-            th = document.createElement('th');
-            th.innerHTML = 'Surname';
-            row.appendChild(th);
+                th = document.createElement('th');
+                th.innerHTML = 'Surname';
+                row.appendChild(th);
 
-            th = document.createElement('th');
-            th.innerHTML = 'Email';
-            row.appendChild(th);
+                th = document.createElement('th');
+                th.innerHTML = 'Email';
+                row.appendChild(th);
 
-            let tbody = adminTable.createTBody();
-            for (let admin of admins) {
-                let tr = tbody.insertRow(-1);
-                let td = tr.insertCell(0);
-                td.innerHTML = admin.id;
-                td = tr.insertCell(1);
-                td.innerHTML = admin.name;
-                td = tr.insertCell(2);
-                td.innerHTML = admin.surname;
-                td = tr.insertCell(3);
-                td.innerHTML = admin.email;
-                tr.addEventListener('click', function () {
-                    $('#modal-default2').modal('show');
-                    editAdmin(admin.id);
-                });
-            }
-        });
+                let tbody = adminTable.createTBody();
+                for (let admin of admins) {
+                    let tr = tbody.insertRow(-1);
+                    let td = tr.insertCell(0);
+                    td.innerHTML = admin.id;
+                    td = tr.insertCell(1);
+                    td.innerHTML = admin.name;
+                    td = tr.insertCell(2);
+                    td.innerHTML = admin.surname;
+                    td = tr.insertCell(3);
+                    td.innerHTML = admin.email;
+                    tr.addEventListener('click', function () {
+                        $('#modal-default2').modal('show');
+                        editAdmin(admin.id);
+                    });
+                }
+            });
 
         function editAdmin(id) {
             fetch('http://localhost:5001/api/User/' + id, {
@@ -114,17 +112,17 @@
                     'Authorization': 'Bearer ' + token
                 }
             })
-            .then(response => response.json())
-            .then(admin => {
-                let adminId = document.getElementById('adminIdFrm');
-                adminId.value = admin.id;
-                let name = document.getElementById('nameFrm');
-                name.value = admin.name;
-                let surname = document.getElementById('surnameFrm');
-                surname.value = admin.surname;
-                let email = document.getElementById('emailFrm');
-                email.value = admin.email;
-            });
+                .then(response => response.json())
+                .then(admin => {
+                    let adminId = document.getElementById('adminIdFrm');
+                    adminId.value = admin.id;
+                    let name = document.getElementById('nameFrm');
+                    name.value = admin.name;
+                    let surname = document.getElementById('surnameFrm');
+                    surname.value = admin.surname;
+                    let email = document.getElementById('emailFrm');
+                    email.value = admin.email;
+                });
         }
 
         const userUpdateForm = document.getElementById('updateUserForm');

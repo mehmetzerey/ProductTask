@@ -2,6 +2,7 @@
 using App.Application.Repositories.Tickets;
 using App.Domain;
 using App.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -11,6 +12,7 @@ namespace App.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TicketController : ControllerBase
     {
         private readonly IWriteTicketRepository _writeTicketRepository;

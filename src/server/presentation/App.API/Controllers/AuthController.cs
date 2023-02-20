@@ -49,6 +49,34 @@ namespace App.API.Controllers
             return Ok(result);
 
         }
+        // POST: api/<AccountController>
+        [HttpPost]
+        [Route("RegisterWithRole")]
+        public async Task<IActionResult> Register(RegisterViewModel model, int role = 2)
+        {
+
+            #region Validate model
+            if (!ModelState.IsValid)
+            {
+                var responseViewModel = new ServiceResponse();
+                responseViewModel.IsSuccess = false;
+                responseViewModel.Message = "Bilgileriniz eksik, bazı alanlar gönderilmemiş. Lütfen tüm alanları doldurunuz.";
+
+                return BadRequest(responseViewModel);
+            }
+            #endregion
+
+            var roleEnum = RoleEnum.From(role);
+
+            var applicationUserModel = new ApplicationUser();
+            applicationUserModel.Email = model.Email;
+            applicationUserModel.Name = model.Name;
+            applicationUserModel.Surname = model.Surname;
+            applicationUserModel.UserName = model.Email;
+            var result = await _writeUserRepository.AddUserAsync(applicationUserModel, model.Password, roleEnum);
+            return Ok(result);
+
+        }
 
         // POST api/<AccountController>
         [HttpPost]

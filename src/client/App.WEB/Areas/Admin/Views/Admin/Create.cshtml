@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Admin Ekle</p>
+
+                <form id="register-form">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Name" id="Name" name="Name">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Surname" id="Surname" name="Surname">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email" id="Email" name="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" placeholder="Password" id="Password" name="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" placeholder="Retype password" id="ConfirmPassword" name="ConfirmPassword">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Ekle</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.form-box -->
+        </div><!-- /.card -->
+    </section>
+</div>
+@section Scripts{
+    <script src="~/js/CreateAdmin.js"></script>
+}

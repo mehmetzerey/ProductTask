@@ -49,6 +49,13 @@ public class ReadUserRepository : ReadRepository<ApplicationUser>, IReadUserRepo
         return base.GetByIdAsync(Id);
     }
 
+    public async Task<List<ApplicationUser>> GetUserByRole(int roleId)
+    {
+        var roleEnum = RoleEnum.From(roleId).Name;
+        var getUsersByRole = await _userManager.GetUsersInRoleAsync(roleEnum);
+        return getUsersByRole.ToList();
+    }
+
     public override IQueryable<ApplicationUser> GetWhere(Expression<Func<ApplicationUser, bool>> method, bool tracking = true)
     {
         return base.GetWhere(method, tracking);

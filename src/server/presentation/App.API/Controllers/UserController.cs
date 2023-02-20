@@ -26,16 +26,18 @@ namespace App.API.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        public List<GetUserViewModel> Get()
+        [Route("GetAll")]
+        public async Task<List<GetUserViewModel>> GetAll(int role)
         {
-            var result = _readUserRepository.GetAll().Select(x => new GetUserViewModel
+            var result = await _readUserRepository.GetUserByRole(role);
+
+            return result.Select(x => new GetUserViewModel
             {
                 Email = x.Email,
                 Id = x.Id,
                 Name = x.Name,
                 Surname = x.Surname
             }).ToList();
-            return result;
         }
 
         [HttpGet("{id}")]
