@@ -11,9 +11,9 @@
         <div class="card-body">
             <p class="login-box-msg">Register a new membership</p>
 
-            <form action="../../index.html" method="post">
+            <form id="register-form">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Full name">
+                    <input type="text" class="form-control" placeholder="Name" id="Name" name="Name">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -21,7 +21,15 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email">
+                    <input type="text" class="form-control" placeholder="Surname" id="Surname" name="Surname">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" id="Email" name="Email">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -29,7 +37,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input type="password" class="form-control" placeholder="Password" id="Password" name="Password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -37,7 +45,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Retype password">
+                    <input type="password" class="form-control" placeholder="Retype password" id="ConfirmPassword" name="ConfirmPassword">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -61,19 +69,11 @@
                 </div>
             </form>
 
-            <div class="social-auth-links text-center">
-                <a href="#" class="btn btn-block btn-primary">
-                    <i class="fab fa-facebook mr-2"></i>
-                    Sign up using Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-danger">
-                    <i class="fab fa-google-plus mr-2"></i>
-                    Sign up using Google+
-                </a>
-            </div>
-
-            <a href="login.html" class="text-center">I already have a membership</a>
+            <a href="/Identity/Login/Index" class="text-center">I already have a membership</a>
         </div>
         <!-- /.form-box -->
     </div><!-- /.card -->
 </div>
+@section Scripts{
+    <script src="~/js/Register.js"></script>
+}

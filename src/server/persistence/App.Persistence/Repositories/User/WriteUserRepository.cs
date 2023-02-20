@@ -10,7 +10,7 @@ public class WriteUserRepository : WriteRepository<ApplicationUser>, IWriteUserR
         _roleManager = roleManager;
     }
 
-    public async Task<ServiceResponse> AddUserAsync(ApplicationUser user, string password)
+    public async Task<ServiceResponse> AddUserAsync(ApplicationUser user, string password, RoleEnum userRole)
     {
         var responseViewModel = new ServiceResponse();
         var existsUser = await _userManager.FindByNameAsync(user.Email);
@@ -19,18 +19,18 @@ public class WriteUserRepository : WriteRepository<ApplicationUser>, IWriteUserR
             var result = await _userManager.CreateAsync(user, password.Trim());
             if (result.Succeeded)
             {
-                bool roleExists = await _roleManager.RoleExistsAsync(RoleEnum.Member.Name);
+                bool roleExists = await _roleManager.RoleExistsAsync(userRole.Name);
 
                 if (!roleExists)
                 {
-                    ApplicationRole role = new ApplicationRole(RoleEnum.Member.Name);
-                    role.NormalizedName = RoleEnum.Member.Name;
+                    ApplicationRole role = new ApplicationRole(userRole.Name);
+                    role.NormalizedName = userRole.Name;
 
                     _roleManager.CreateAsync(role).Wait();
                 }
 
                 //Kullanıcıya ilgili rol ataması yapılır.
-                _userManager.AddToRoleAsync(user, RoleEnum.Member.Name).Wait();
+                _userManager.AddToRoleAsync(user, userRole.Name).Wait();
 
                 responseViewModel.IsSuccess = true;
                 responseViewModel.Message = "Kullanıcı başarılı şekilde oluşturuldu.";
@@ -45,5 +45,42 @@ public class WriteUserRepository : WriteRepository<ApplicationUser>, IWriteUserR
         return responseViewModel;
     }
 
+    public async Task<ServiceResponse> DeleteUserAsync(ApplicationUser user)
+    {
+        var responseViewModel = new ServiceResponse();
+
+        var result = await _userManager.DeleteAsync(user);
+        if (result.Succeeded)
+        {
+            responseViewModel.IsSuccess = true;
+            responseViewModel.Message = "Kullanıcı başarılı şekilde silindi.";
+        }
+        else
+        {
+            responseViewModel.IsSuccess = false;
+            responseViewModel.Message = "Kullanıcı bilgileri silinirken hata oldu.";
+        }
+
+        return responseViewModel;
+    }
+
+    public async Task<ServiceResponse> UpdateUserAsync(ApplicationUser user)
+    {
+        var responseViewModel = new ServiceResponse();
+
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+        {
+            responseViewModel.IsSuccess = true;
+            responseViewModel.Message = "Kullanıcı bilgileri başarılı şekilde güncellendi.";
+        }
+        else
+        {
+            responseViewModel.IsSuccess = false;
+            responseViewModel.Message = "Kullanıcı bilgileri güncellenirken hata oldu.";
+        }
+
+        return responseViewModel;
+    }
 }
 

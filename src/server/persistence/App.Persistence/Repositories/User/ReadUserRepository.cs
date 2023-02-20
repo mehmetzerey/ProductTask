@@ -17,18 +17,31 @@ public class ReadUserRepository : ReadRepository<ApplicationUser>, IReadUserRepo
         }
         else
         {
-            return new ApplicationUser();
+            return null;
         }
     }
 
-    public Task<ApplicationUser> FindByIdAsync(string userId)
+    public async Task<ApplicationUser> FindByIdAsync(int userId)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+        if (user != null)
+        {
+            return user;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public async Task<ApplicationUser> FindByNameAsync(string userName)
     {
         return await _userManager.FindByNameAsync(userName);
+    }
+
+    public List<ApplicationUser> GetAll()
+    {
+        return base.GetAll().ToList();
     }
 
     public override Task<ApplicationUser> GetByIdAsync(Guid Id)

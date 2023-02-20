@@ -58,7 +58,7 @@ public class AuthService : IAuthService
             response.IsSuccess = false;
             return response;
         }
-        tokenProvider = new AccessTokenGenerator(_context, _configuration, findUser);
+        tokenProvider = new AccessTokenGenerator(_context, _configuration, findUser, userManager: _userManager);
         var userRoles = await _userManager.GetRolesAsync(findUser);
         if (userRoles.Count == 0)
         {
@@ -85,7 +85,7 @@ public class AuthService : IAuthService
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }
 
-            var token = tokenProvider.GetToken();
+            var token = await tokenProvider.GetToken();
             response.Data.Token = token.Value;
             response.Data.Expiration = token.ExpireDate;
             response.IsSuccess = true;

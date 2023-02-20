@@ -7,15 +7,7 @@
     xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 
     xhr.onload = function () {
-        if (xhr.status === 200) {
-            const decoded = jwt_decode(token);
-            if (decoded.role == "member") {
-                window.location.href = '/Customer/Home/Index';
-            }
-            else if (decoded.role == "admin") {
-                window.location.href = '/Admin/Home/Index';
-            }
-        } else if (xhr.status === 401) {
+        if (xhr.status === 401) {
             window.location.href = '/Identity/Login/Index';
         }
     };

@@ -1,17 +1,18 @@
 ﻿namespace App.Domain.Enums;
 
-public class RoleEnum : Enumeration
+public class TicketStatus : Enumeration
 {
-    public static RoleEnum Admin = new RoleEnum(1, nameof(Admin).ToLowerInvariant());
-    public static RoleEnum Member = new RoleEnum(2, nameof(Member).ToLowerInvariant());
-    public RoleEnum(int id, string name) : base(id, name)
+    public static TicketStatus IslemYapildi = new TicketStatus(1, nameof(IslemYapildi).ToLowerInvariant());
+    public static TicketStatus IslemYapilmadi = new TicketStatus(2, nameof(IslemYapilmadi).ToLowerInvariant());
+    public static TicketStatus Silinmis = new TicketStatus(3, nameof(Silinmis).ToLowerInvariant());
+    public TicketStatus(int id, string name) : base(id, name)
     {
     }
 
-    public static IEnumerable<RoleEnum> List() =>
-        new[] { Admin, Member };
+    public static IEnumerable<TicketStatus> List() =>
+        new[] { IslemYapildi, IslemYapilmadi, Silinmis };
 
-    public static RoleEnum FromName(string name)
+    public static TicketStatus FromName(string name)
     {
         var state = List()
             .SingleOrDefault(s => string.Equals(s.Name, name, StringComparison.CurrentCultureIgnoreCase));
@@ -24,7 +25,7 @@ public class RoleEnum : Enumeration
         return state;
     }
 
-    public static RoleEnum From(int id)
+    public static TicketStatus From(int id)
     {
         var state = List().SingleOrDefault(s => s.Id == id);
 

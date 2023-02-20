@@ -9,6 +9,7 @@ public class TokenProvider
     public class AccessTokenGenerator
     {
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
         public AppIdentityDbContext _context { get; set; }
         public ApplicationUser _applicationUser { get; set; }
 
@@ -21,18 +22,20 @@ public class TokenProvider
         /// <returns></returns>
         public AccessTokenGenerator(AppIdentityDbContext context,
                                     IConfiguration config,
-                                    ApplicationUser applicationUser)
+                                    ApplicationUser applicationUser,
+                                    UserManager<ApplicationUser> userManager)
         {
             _configuration = config;
             _context = context;
             _applicationUser = applicationUser;
+            _userManager = userManager;
         }
 
         /// <summary>
         /// Kullanıcı üzerinde tanımlı tokenı döner;Token yoksa oluşturur. Expire olmuşsa update eder.
         /// </summary>
         /// <returns></returns>
-        public ApplicationUserTokens GetToken()
+        public async Task<ApplicationUserTokens> GetToken()
         {
             ApplicationUserTokens userTokens = null;
             TokenView tokenInfo = null;
@@ -47,7 +50,7 @@ public class TokenProvider
                 if (userTokens.ExpireDate <= DateTime.Now)
                 {
                     //Create new token
-                    tokenInfo = GenerateToken();
+                    tokenInfo = await GenerateToken();
 
                     userTokens.ExpireDate = tokenInfo.Expiration.AddHours(1);
                     userTokens.Value = tokenInfo.Token;
@@ -58,7 +61,7 @@ public class TokenProvider
             else
             {
                 //Create new token
-                tokenInfo = GenerateToken();
+                tokenInfo = await GenerateToken();
 
                 userTokens = new ApplicationUserTokens();
 
@@ -71,7 +74,7 @@ public class TokenProvider
                 _context.ApplicationUserTokens.Add(userTokens);
             }
 
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return userTokens;
         }
@@ -108,11 +111,12 @@ public class TokenProvider
         /// Yeni token oluşturur.
         /// </summary>
         /// <returns></returns>
-        private TokenView GenerateToken()
+        private async Task<TokenView>GenerateToken()
         {
             DateTime expireDate = DateTime.Now.AddSeconds(50);
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration["Application:Secret"]);
+            var userRole = await _userManager.GetRolesAsync(_applicationUser);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -127,7 +131,7 @@ public class TokenProvider
                     new Claim("name", _applicationUser.Name),
                     new Claim("surname", _applicationUser.Surname),
                     new Claim("email", _applicationUser.Email),
-                    new Claim("role", RoleEnum.Member.Name)
+                    new Claim("role", userRole.FirstOrDefault().ToLower())
                 }),
 
                 //ExpireDate

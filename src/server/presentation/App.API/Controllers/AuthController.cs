@@ -4,6 +4,7 @@ using App.Application.Repositories.User;
 using App.Domain.Models;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc;
+using App.Domain.Enums;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,6 +25,7 @@ namespace App.API.Controllers
 
         // POST: api/<AccountController>
         [HttpPost]
+        [Route("Register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
 
@@ -43,7 +45,7 @@ namespace App.API.Controllers
             applicationUserModel.Name = model.Name;
             applicationUserModel.Surname = model.Surname;
             applicationUserModel.UserName = model.Email;
-            var result = await _writeUserRepository.AddUserAsync(applicationUserModel, model.Password);
+            var result = await _writeUserRepository.AddUserAsync(applicationUserModel, model.Password, RoleEnum.Member);
             return Ok(result);
 
         }
