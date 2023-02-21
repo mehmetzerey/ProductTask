@@ -19,7 +19,6 @@ loginForm.addEventListener('submit', function (event) {
             if (response.isSuccess == true) {
                 localStorage.setItem("token", response.data.token);
                 const decoded = jwt_decode(response.data.token);
-                debugger;
                 if (decoded.role == "member") {
                     window.location.href = '/Customer/Home/Index';
                 }

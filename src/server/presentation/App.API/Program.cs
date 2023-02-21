@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -32,5 +33,10 @@ app.UseCors("AllowAnyOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+         Path.Combine(app.Environment.ContentRootPath, "MyFiles")),
+    RequestPath = "/Files"
+});
 app.Run();

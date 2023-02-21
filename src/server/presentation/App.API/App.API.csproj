@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\persistence\App.Persistence\App.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MyFiles\" />
+  </ItemGroup>
+
 </Project>

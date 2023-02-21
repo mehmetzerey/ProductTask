@@ -1,6 +1,8 @@
 ﻿using App.Application.Authentication;
+using App.Application.Repositories.Products;
 using App.Application.Repositories.Tickets;
 using App.Persistence.Authentication;
+using App.Persistence.Repositories.Products;
 using App.Persistence.Repositories.Tickets;
 using Microsoft.Extensions.Configuration;
 
@@ -42,12 +44,20 @@ public static class ServiceRegistration
             ClockSkew = TimeSpan.FromHours(3),
             };
         });
+
         services.AddScoped<IAuthService, AuthService>();
+
         services.AddScoped<IReadTicketRepository, ReadTicketRepository>();
         services.AddScoped<IWriteTicketRepository, WriteTicketRepository>();
+
+        services.AddScoped<IReadProductRepository, ReadProductRepository>();
+        services.AddScoped<IWriteProductRepository, WriteProductRepository>();
+
         services.AddScoped<IReadUserRepository, ReadUserRepository>();
         services.AddScoped<IWriteUserRepository, WriteUserRepository>();
+
         services.AddScoped<IWriteRoleRepository, WriteRoleRepository>();
+
         return services;
     }
 }

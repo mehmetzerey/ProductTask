@@ -8,6 +8,7 @@ public class AppIdentityDbContext : IdentityDbContext<ApplicationUser, Applicati
     }
     public DbSet<ApplicationUserTokens> ApplicationUserTokens { get; set; }
     public DbSet<Ticket> Ticket { get; set; }
+    public DbSet<Product> Product { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
