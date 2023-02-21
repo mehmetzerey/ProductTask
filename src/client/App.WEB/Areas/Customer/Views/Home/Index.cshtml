@@ -6,5 +6,84 @@
 
 <div class="content-wrapper">
     <section class="content">
+        <div class="row justify-content-center mt-4">
+            <div class="col-sm-6">
+                <table id="ticketList" class="table table-striped projects">
+                </table>
+            </div>
+        </div>
     </section>
 </div>
+@section Scripts{
+    <script type="text/javascript">
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:5001/api/Ticket', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(tickets => {
+                let ticketTable = document.getElementById('ticketList');
+                ticketTable.innerHTML = '';
+                let header = ticketTable.createTHead();
+                let row = header.insertRow(0);
+                let th = document.createElement('th');
+                th.innerHTML = 'ID';
+                row.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = 'Kullanıcı';
+                row.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = 'Konu';
+                row.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = 'Mesaj';
+                row.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = 'Tarih';
+                row.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = 'Form Durumu';
+                row.appendChild(th);
+
+                let tbody = ticketTable.createTBody();
+                for (let ticket of tickets) {
+                    let tr = tbody.insertRow(-1);
+                    let td = tr.insertCell(0);
+                    td.innerHTML = ticket.id;
+
+                    td = tr.insertCell(1);
+                    td.innerHTML = ticket.customerFullName;
+
+                    td = tr.insertCell(2);
+                    td.innerHTML = ticket.subject;
+
+                    td = tr.insertCell(3);
+                    td.innerHTML = ticket.message;
+
+                    td = tr.insertCell(4);
+                    td.innerHTML = ticket.created;
+
+                    td = tr.insertCell(5);
+                    if (ticket.statusId == 1)
+                        td.innerHTML = 'İşlem Yapıldı';
+                    if (ticket.statusId == 2)
+                        td.innerHTML = 'İşlem Yapılmadı';
+                    if (ticket.statusId == 3)
+                        td.innerHTML = 'Silindi';
+                }
+            });
+
+    </script>
+}

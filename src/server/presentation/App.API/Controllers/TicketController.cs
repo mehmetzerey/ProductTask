@@ -26,7 +26,13 @@ namespace App.API.Controllers
         [HttpGet]
         public IEnumerable<GetTicketViewModel> Get()
         {
-            return _readTicketRepository.GetAll();
+            var userRole = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+            var userId = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
+            if (userRole == RoleEnum.Admin.Name)
+                return _readTicketRepository.GetAll();
+            else
+                return _readTicketRepository.GetByUserId(userId);
         }
 
         // GET api/<TicketController>/5

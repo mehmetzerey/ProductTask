@@ -23,6 +23,20 @@ public class ReadTicketRepository : ReadRepository<Ticket>, IReadTicketRepositor
         }).ToList();
     }
 
+    public List<GetTicketViewModel> GetByUserId(int userId)
+    {
+        return base.GetWhere(x=> x.CustomerId == userId).Select(x => new GetTicketViewModel
+        {
+            Created = x.CreatedDate,
+            CustomerFullName = x.Customer.Name + " " + x.Customer.Surname,
+            Id = x.Id,
+            Message = x.Message,
+            Status = TicketStatus.From(x.Status).Name,
+            Subject = x.Subject,
+            StatusId = x.Status
+        }).ToList();
+    }
+
     public Ticket GetById(int id)
     {
         return base.GetWhere(x => x.Id == id, true, y => y.Customer).FirstOrDefault();
