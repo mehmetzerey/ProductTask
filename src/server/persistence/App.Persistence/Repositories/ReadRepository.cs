@@ -1,4 +1,6 @@
-﻿namespace App.Persistence.Repositories;
+﻿using IdentityModel;
+
+namespace App.Persistence.Repositories;
 
 public class ReadRepository<T> : IReadRepository<T> where T : class
 {
@@ -20,9 +22,28 @@ public class ReadRepository<T> : IReadRepository<T> where T : class
         return query;
     }
 
+    public virtual IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
+    {
+        var query = Table.AsQueryable();
+
+        foreach (var includeProperty in includeProperties)
+        {
+            query = query.Include(includeProperty);
+        }
+        return query;
+    }
+
     public virtual IQueryable<T> GetWhere(Expression<Func<T, bool>> method, bool tracking = true)
     {
         var query = Table.Where(method);
+        if (!tracking)
+            query = query.AsNoTracking();
+        return query;
+    }
+
+    public virtual IQueryable<T> GetWhere(Expression<Func<T, bool>> method, bool tracking = true, params Expression<Func<T, object>>[] includeProperties)
+    {
+        var query = GetAllIncluding(includeProperties).Where(method);
         if (!tracking)
             query = query.AsNoTracking();
         return query;

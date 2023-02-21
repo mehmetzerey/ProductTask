@@ -31,9 +31,20 @@ namespace App.API.Controllers
 
         // GET api/<TicketController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public GetTicketViewModel Get(int id)
         {
-            return "value";
+            var result = _readTicketRepository.GetById(id);
+
+            return new GetTicketViewModel
+            {
+                Created = result.CreatedDate,
+                CustomerFullName = result.Customer.Name + " " + result.Customer.Surname,
+                Id = result.Id,
+                Message = result.Message,
+                Status = TicketStatus.From(result.Status).Name,
+                StatusId = result.Status,
+                Subject = result.Subject 
+            };
         }
 
         // POST api/<TicketController>
@@ -75,7 +86,6 @@ namespace App.API.Controllers
                 var statusCheck = TicketStatus.List().FirstOrDefault(x => x.Id == model.StatusId);
                 if (statusCheck != null)
                 {
-                    response.IsSuccess = true;
                     var getTicket = _readTicketRepository.GetById(model.Id);
                     if (getTicket != null)
                     {

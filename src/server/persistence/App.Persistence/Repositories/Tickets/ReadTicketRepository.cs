@@ -25,6 +25,6 @@ public class ReadTicketRepository : ReadRepository<Ticket>, IReadTicketRepositor
 
     public Ticket GetById(int id)
     {
-        return base.GetWhere(x => x.Id == id).FirstOrDefault();
+        return base.GetWhere(x => x.Id == id, true, y => y.Customer).FirstOrDefault();
     }
 }
